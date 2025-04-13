@@ -1,0 +1,123 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  #filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .filter {
+    text-align: center;
+    background: #f5f5f5;
+    border-radius: 10px;
+    padding: 1rem;
+    transition: transform 0.3s;
+    text-decoration: none;
+    color: black;
+  }
+
+  .filter:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+    background: #e0e0e0;
+  }
+
+  .filter i {
+    font-size: 1.5rem;
+    color: #fe424d;
+  }
+
+  .filter p {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .tax-info {
+    display: none;
+  }
+
+  .tax-toggle {
+    border: 1px solid black;
+    border-radius: 1rem;
+    height: 3.5rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
+
+  .listing-link {
+    text-decoration: none;
+    color: black;
+  }
+
+  .listing-card {
+    margin-bottom: 2rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+
+  .listing-card:hover {
+    transform: scale(1.02);
+  }
+</style>
+
+<!-- Filter Section -->
+<div id="filters">
+  <a href="/listings/category/Trending" class="filter"><i class="fa-solid fa-fire"></i><p>Trending</p></a>
+  <a href="/listings/category/Rooms" class="filter"><i class="fa-solid fa-bed"></i><p>Rooms</p></a>
+  <a href="/listings/category/villa" class="filter"><i class="fa-solid fa-city"></i><p>villa</p></a>
+  <a href="/listings/category/mountain" class="filter"><i class="fa-solid fa-mountain"></i><p>Mountains</p></a>
+  <a href="/listings/category/Castles" class="filter"><i class="fa-solid fa-chess-rook"></i><p>Castles</p></a>
+  <a href="/listings/category/Swimming Pool" class="filter"><i class="fa-solid fa-person-swimming"></i><p>Swimming Pool</p></a>
+  <a href="/listings/category/Camping" class="filter"><i class="fa-solid fa-campground"></i><p>Camping</p></a>
+  <a href="/listings/category/Farms" class="filter"><i class="fa-solid fa-cow"></i><p>Farms</p></a>
+  <a href="/listings/category/Arctic" class="filter"><i class="fa-solid fa-snowflake"></i><p>Arctic</p></a>
+</div>
+
+<!-- <div class="d-flex justify-content-center">
+  <div class="tax-toggle">
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+      <label class="form-check-label" for="switchCheckDefault">Display total after taxes</label>
+    </div>
+  </div>
+</div> -->
+
+<!-- Listings Grid -->
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3 container mx-auto">
+  <% for (let listing of allListings) { %>
+    <a href="/listings/<%= listing._id %>" class="listing-link">
+      <div class="card listing-card shadow-sm">
+        <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem;">
+        <div class="card-body">
+          <p class="card-text fw-bold"><%= listing.title %></p>
+          <p class="card-text">
+            ₹ <%= listing.price.toLocaleString("en-IN") %> / night 
+            &nbsp;&nbsp;<span class="tax-info">+18% GST</span>
+          </p>
+        </div>
+      </div>
+    </a>
+  <% } %>
+</div>
+
+<!-- Tax Toggle Script -->
+<script>
+  let taxSwitch = document.getElementById("switchCheckDefault");
+  taxSwitch.addEventListener("click", () => {
+    document.querySelectorAll(".tax-info").forEach(el => {
+      el.style.display = el.style.display === "inline" ? "none" : "inline";
+    });
+  });
+</script>

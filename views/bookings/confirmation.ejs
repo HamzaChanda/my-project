@@ -1,0 +1,126 @@
+<% layout("layouts/boilerplate") %>
+
+<style>
+  body {
+    background: linear-gradient(to right, #e0f7fa, #e1f5fe);
+  }
+
+  .confirmation-wrapper {
+    min-height: calc(100vh - 160px); /* adjusts to leave space for navbar & footer */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+  }
+
+  .confirmation-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px);
+    border-radius: 25px;
+    padding: 3rem 2rem;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    animation: fadeInUp 0.8s ease;
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .confirmation-icon {
+    font-size: 4rem;
+    color: #28a745;
+  }
+
+  .confirmation-heading {
+    font-weight: 700;
+    font-size: 2.4rem;
+    color: #28a745;
+  }
+
+  .details-list li {
+    background-color: transparent;
+    border: none;
+    font-size: 1.1rem;
+    padding: 0.6rem 0;
+  }
+
+  .details-list strong {
+    color: #007bff;
+  }
+
+  .return-btn {
+    transition: all 0.3s ease-in-out;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+  }
+
+  .return-btn:hover {
+    transform: scale(1.05);
+    background-color: #198754;
+    color: white;
+  }
+
+  @media (max-width: 576px) {
+    .confirmation-heading {
+      font-size: 2rem;
+    }
+
+    .confirmation-icon {
+      font-size: 3rem;
+    }
+  }
+</style>
+
+<div class="container confirmation-wrapper">
+  <div class="confirmation-card text-center">
+    <div class="mb-4">
+      <i class="bi bi-patch-check-fill confirmation-icon"></i>
+      <% if (booking.status === "confirmed") { %>
+        <h2 class="confirmation-heading mt-3 text-success">Booking Confirmed!</h2>
+        <p class="text-muted fs-5">Thank you for your booking, <strong><%= booking.user.username %></strong>!</p>
+      <% } else { %>
+        <h2 class="confirmation-heading mt-3 text-warning">Booking Request Sent</h2>
+        <p class="text-muted fs-5">Hi <strong><%= booking.user.username %></strong>, your booking is pending approval. You’ll be notified once it’s confirmed.</p>
+      <% } %>      
+    </div>
+
+    <hr class="my-4">
+
+    <h5 class="text-primary fw-semibold mb-3">
+      <i class="bi bi-journal-check me-2"></i>Booking Details
+    </h5>
+
+    <ul class="list-group details-list mb-4 text-start">
+      <li><strong>🏠 Listing:</strong> <%= booking.listing.title %></li>
+      <li><strong>📅 Check-In:</strong> <%= booking.checkIn.toDateString() %></li>
+      <li><strong>📅 Check-Out:</strong> <%= booking.checkOut.toDateString() %></li>
+      <li><strong>👥 Guests:</strong> <%= booking.guests %></li>
+      <li><strong>📧 Email:</strong> <%= booking.email %></li>
+      <li><strong>📞 Phone:</strong> <%= booking.phone %></li>
+      
+      <% if (booking.guestDetails && booking.guestDetails.length > 0) { %>
+        <li><strong>🧾 Guest Details:</strong>
+          <ul class="ps-3">
+            <% booking.guestDetails.forEach((guest, index) => { %>
+              <li>
+                <strong><%= index + 1 %>.</strong> <%= guest.name %> — <%= guest.gender %>, <%= guest.ageGroup %>
+              </li>
+            <% }) %>
+          </ul>
+        </li>
+      <% } %>
+    </ul>    
+    <a href="/listings/<%= booking.listing._id %>" class="btn btn-outline-success btn-lg return-btn">
+      <i class="bi bi-arrow-left-circle me-2"></i>Back to Listing
+    </a>
+  </div>
+</div>

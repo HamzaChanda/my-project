@@ -1,0 +1,283 @@
+<% layout("layouts/boilerplate") %>
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<!-- Optional: Theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_green.css">
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<body>
+  <style>
+    .glass-card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+.new{
+  color:  #fe424d !important;
+}
+label {
+  font-weight: 500;
+  color: #333;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+.booking-btn {
+  transition: all 0.3s ease-in-out;
+}
+
+.booking-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  background-color:  #fe424d !important ;
+  box-shadow: 0 8px 16px rgba(21, 115, 71, 0.3);
+}
+
+  </style>
+  <script>
+    const mapToken = "<%= process.env.MAP_TOKEN %>";
+    const coordinates = '<%- JSON.stringify(listing.geometry.coordinates) %>';
+  </script>
+
+  <div class="container my-5">
+    <!-- Title -->
+    <div class="text-center mb-4">  
+      <h1 class="fw-bold"><%= listing.title %></h1>
+      <p class="text-muted fs-5">
+        <i class="bi bi-geo-alt-fill"></i> <%= listing.location %>, <%= listing.country %>
+      </p>
+    </div>
+
+    <!-- Image and Details Card -->
+    <div class="card shadow-lg rounded-4 overflow-hidden mx-auto" style="max-width: 800px;">
+      <div style="height: 350px; overflow: hidden;">
+        <img src="<%= listing.image.url %>" 
+             class="img-fluid w-100" 
+             style="height: 100%; object-fit: cover;" 
+             alt="listing_image">
+      </div>
+      <div class="card-body p-4">
+        <h5 class="card-title">
+          Posted by <span class="fw-semibold fst-italic"><%= listing.owner.username %></span>
+        </h5>
+        <p class="card-text my-3"><%= listing.discription %></p>
+        <h4 class="text-success fw-bold">&#8377; <%= listing.price.toLocaleString("en-IN") %>/night</h4>
+      </div>
+    </div>
+
+    <!-- Edit / Delete Buttons -->
+    <% if (currentUser && currentUser.id == listing.owner.id) { %>
+      <div class="d-flex justify-content-center gap-3 my-4">
+        <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-primary px-4">Edit</a>
+        <form method="post" action="/listings/<%= listing._id %>?_method=DELETE">
+          <button class="btn btn-outline-danger px-4">Delete</button>
+        </form>
+      </div>
+    <% } %>
+
+
+<!-- Booking Form -->
+<% if (currentUser && currentUser.id !== listing.owner.id) { %>
+  <div class="my-5 mx-auto" style="max-width: 800px;">
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+      <div class="card-header bg-success text-white text-center py-3">
+        <h4 class="mb-0"><i class="bi bi-calendar2-check-fill me-2"></i>Book this Listing</h4>
+      </div>
+      <form action="/listings/<%= listing._id %>/bookings" method="POST" class="card-body bg-light p-4">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="checkIn" class="form-label">Check-In</label>
+            <input type="date" id="checkIn" name="booking[checkIn]" class="form-control shadow-sm" required>
+          </div>
+          <div class="col-md-6">
+            <label for="checkOut" class="form-label">Check-Out</label>
+            <input type="date" id="checkOut" name="booking[checkOut]" class="form-control shadow-sm" required>
+          </div>
+
+          <div class="col-12">
+            <label for="guests" class="form-label">Number of Guests</label>
+            <input type="number" id="guests" class="form-control shadow-sm" min="1" required>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Guest Details</label>
+            <div id="guestDetailsContainer"></div>
+          </div>
+
+          <div class="col-12">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" id="email" name="booking[email]" class="form-control shadow-sm" placeholder="yourname@example.com" required>
+          </div>
+
+          <div class="col-12">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input type="tel" id="phone" name="booking[phone]" class="form-control shadow-sm" placeholder="e.g. +91 9876543210" required>
+          </div>
+
+          <div class="col-12 d-grid mt-4">
+            <button type="submit" class="btn btn-success fw-bold btn-lg">
+              <i class="bi bi-check2-circle me-2"></i>Book Now
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const guestDetailsContainer = document.getElementById('guestDetailsContainer');
+    const guestsInput = document.getElementById('guests');
+
+    function createGuestDetailFields(index) {
+      return `
+        <div class="border p-3 rounded-3 mb-3 hover-grow bg-white">
+          <h6 class="fw-bold">Guest ${index + 1}</h6>
+          <div class="mb-2">
+            <label for="guestName${index}" class="form-label">Name</label>
+            <input type="text" name="booking[guestDetails][${index}][name]" id="guestName${index}" class="form-control" required>
+          </div>
+          <div class="mb-2">
+            <label for="guestGender${index}" class="form-label">Gender</label>
+            <select name="booking[guestDetails][${index}][gender]" id="guestGender${index}" class="form-select" required>
+              <option value="">Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+              <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+          </div>
+          <div>
+            <label for="guestAge${index}" class="form-label">Age Group</label>
+            <select name="booking[guestDetails][${index}][ageGroup]" id="guestAge${index}" class="form-select" required>
+              <option value="">Select</option>
+              <option value="Under 18">Under 18</option>
+              <option value="18-25">18-25</option>
+              <option value="26-35">26-35</option>
+              <option value="36-50">36-50</option>
+              <option value="51+">51+</option>
+            </select>
+          </div>
+        </div>
+      `;
+    }
+
+    function updateGuestDetails() {
+      const numberOfGuests = parseInt(guestsInput.value);
+      guestDetailsContainer.innerHTML = '';
+      if (!isNaN(numberOfGuests) && numberOfGuests > 0) {
+        for (let i = 0; i < numberOfGuests; i++) {
+          guestDetailsContainer.innerHTML += createGuestDetailFields(i);
+        }
+      }
+    }
+
+    guestsInput.addEventListener('input', updateGuestDetails);
+    window.addEventListener('DOMContentLoaded', updateGuestDetails);
+  </script>
+<% } %>
+
+<style>
+  .booking-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .booking-card input[type="date"],
+  .booking-card input[type="email"],
+  .booking-card input[type="tel"],
+  .booking-card input[type="number"] {
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .booking-card input:focus {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25);
+  }
+
+  .hover-grow {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .hover-grow:hover {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 576px) {
+    .booking-card h2 {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+    
+
+
+    <!-- Map Section -->
+    <div class="mt-5 text-center">
+      <h4 class="mb-3">Where you'll be</h4>
+      <div id="map" class="rounded-4 shadow border" style="height: 350px; max-width: 900px; margin: auto;"></div>
+    </div>
+
+    <!-- Review Form -->
+    <% if (currentUser) { %>
+      <div class="mt-5 mx-auto" style="max-width: 800px;">
+        <h4 class="mb-4">Leave a Review</h4>
+        <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate>
+          <!-- Star Rating -->
+          <fieldset class="starability-slot mb-3">
+            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+            <label for="first-rate1" title="Terrible">1 star</label>
+            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+            <label for="first-rate2" title="Not good">2 stars</label>
+            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+            <label for="first-rate3" title="Average">3 stars</label>
+            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+            <label for="first-rate4" title="Very good">4 stars</label>
+            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+            <label for="first-rate5" title="Amazing">5 stars</label>
+          </fieldset>
+
+          <!-- Comment -->
+          <div class="mb-3">
+            <label for="comment" class="form-label">Comment</label>
+            <textarea name="review[comment]" class="form-control" id="comment" rows="4" required></textarea>
+            <div class="invalid-feedback">Please write a comment</div>
+          </div>
+          <button type="submit" class="btn btn-dark px-4">Submit</button>
+        </form>
+      </div>
+    <% } %>
+
+    <!-- All Reviews -->
+    <% if (listing.review.length > 0) { %>
+      <div class="mt-5 mx-auto" style="max-width: 800px;">
+        <h5 class="mb-4">All Reviews</h5>
+        <% for (let review of listing.review) { %>
+          <div class="card mb-3 shadow-sm border-0 rounded-4">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0">By <b><i><%= review.author.username %></i></b></h6>
+                <p class="starability-result mb-0" data-rating="<%= review.rating %>"></p>
+              </div>
+              <p class="mb-2"><%= review.comment %></p>
+              <% if (currentUser && currentUser._id.toString() === review.author._id.toString()) { %>
+                <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                  <button class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+              <% } %>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+
+  <script src="/JS/map.js"></script>
+
+  
+</body>
