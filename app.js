@@ -71,30 +71,6 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
-passport.use(new FacebookStrategy({
-    clientID: process.env.FB_CLIENT_ID,
-    clientSecret: process.env.FB_CLIENT_SECRET,
-    callbackURL: "/auth/facebook/callback",
-    profileFields: ['id', 'displayName', 'photos', 'email']
-  },
-  async function (accessToken, refreshToken, profile, done) {
-    try {
-      let existingUser = await User.findOne({ facebookId: profile.id });
-      if (existingUser) return done(null, existingUser);
-
-      let newUser = new User({
-        username: profile.displayName,
-        facebookId: profile.id,
-        email: profile.emails ? profile.emails[0].value : undefined
-      });
-      await newUser.save();
-      done(null, newUser);
-    } catch (err) {
-      done(err, null);
-    }
-  }
-));
-
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
