@@ -105,15 +105,6 @@ app.use("/listings",reviewRouter);
 app.use("/",userRouter);
 app.use('/', bookingRoutes);
 
-app.get('/auth/facebook', passport.authenticate('facebook'));
-
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', {
-    successRedirect: '/listings',
-    failureRedirect: '/login',
-    failureFlash: true
-  })
-);
 app.get('/about', (req, res) => {
     res.render('listings/aboutUs');
 });
