@@ -40,16 +40,18 @@ app.listen(port,()=>{
     console.log("server is running on port 8080");
 })
 //making mongostore
-const store=MongoStore.create({
-  mongoUrl:Mongo_Url,
-  crypto:{
-    secret:process.env.SECRET,
+const store = MongoStore.create({
+  mongoUrl: Mongo_Url,
+  crypto: {
+    secret: process.env.SECRET
   },
-  touchAfter:24*3600
-})
-store.on("error",()=>{
-  console.log("error in session store",error);
+  touchAfter: 24 * 3600
 });
+
+store.on("error", (err) => {
+  console.log("Session Store Error:", err);
+});
+
 // session option
 const sessionOptions={
     store,
