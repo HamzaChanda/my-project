@@ -29,24 +29,44 @@ module.exports.showListing=async (req, res) => {
 };
 // create route
 module.exports.createListing = async (req, res, next) => {
-    console.log("Received data:", req.body.listing);  // Check if data is populated
-    let response = await geoCodingClient.forwardGeocode({
-        query: req.body.listing.location,
-        limit: 1
-    }).send();
+    try {
+        console.log("Received data:", req.body.listing);
 
-    let url = req.file.path;
-    let filename = req.file.filename;
+        if (!req.body.listing || !req.file) {
+            req.flash("error", "Incomplete listing data or image not uploaded.");
+            return res.redirect("/listings/new");
+        }
 
-    const newListing = new Listings(req.body.listing);
-    newListing.owner = req.user._id;
-    newListing.image = { url, filename };
-    newListing.geometry = response.body.features[0].geometry;
-    let savedListing = await newListing.save();
-    console.log(savedListing);  // Verify saved listing
-    req.flash("success", "New listing created!");
-    res.redirect("/listings");
-}
+        const geoResponse = await geoCodingClient.forwardGeocode({
+            query: req.body.listing.location,
+            limit: 1
+        }).send();
+
+        if (!geoResponse.body.features.length) {
+            req.flash("error", "Invalid location provided.");
+            return res.redirect("/listings/new");
+        }
+
+        const newListing = new Listings(req.body.listing);
+        newListing.owner = req.user._id;
+        newListing.image = {
+            url: req.file.path,
+            filename: req.file.filename
+        };
+        newListing.geometry = geoResponse.body.features[0].geometry;
+
+        const savedListing = await newListing.save();
+        console.log("Saved listing:", savedListing);
+
+        req.flash("success", "New listing created!");
+        return res.redirect("/listings");
+
+    } catch (err) {
+        console.error("Error in createListing:", err);
+        next(err); // Pass to Express error handler
+    }
+};
+
 
 // edit Form route
 module.exports.renderEditForm=async(req,res)=>{
