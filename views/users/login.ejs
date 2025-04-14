@@ -141,30 +141,31 @@
     </div>
 
     <!-- Right Side -->
-<div class="col-md-6 p-4 login-right">
-  <h3 class="mb-4 fw-semibold">Login to Continue</h3>
-  <form action="/login" method="POST" class="needs-validation" novalidate>
-    <div class="mb-3">
-      <label for="email" class="form-label">Email</label>
-      <input type="email" class="form-control" id="email" name="email" required>
-      <div class="invalid-feedback">Please enter your email.</div>
+    <div class="col-md-6 p-4 login-right">
+      <h3 class="mb-4 fw-semibold">Login to Continue</h3>
+      <form action="/login" method="POST" class="needs-validation" novalidate>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+          <div class="invalid-feedback">Please enter your Email.</div>
+        </div>
+
+        <div class="mb-4">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+          <div class="invalid-feedback">Please enter your password.</div>
+        </div>
+
+        <button type="submit" class="btn login-btn w-100">Login</button>
+      </form>
+
+      <p class="text-muted mt-4">
+        New here? 
+        <a href="/signup" class="yellow-highlight text-decoration-none">Create an account</a>
+      </p>
     </div>
-
-    <div class="mb-4">
-      <label for="password" class="form-label">Password</label>
-      <input type="password" class="form-control" id="password" name="password" required>
-      <div class="invalid-feedback">Please enter your password.</div>
-    </div>
-
-    <button type="submit" class="btn login-btn w-100">Login</button>
-  </form>
-
-  <p class="text-muted mt-4">
-    New here? 
-    <a href="/signup" class="yellow-highlight text-decoration-none">Create an account</a>
-  </p>
+  </div>
 </div>
-
 
 <script>
   (function () {
