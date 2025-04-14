@@ -48,7 +48,7 @@ const store=MongoStore.create({
   touchAfter:24*3600
 })
 store.on("error",()=>{
-  console.log("error in session store",err);
+  console.log("error in session store",error);
 });
 // session option
 const sessionOptions={
@@ -56,11 +56,13 @@ const sessionOptions={
     secret:process.env.SECRET,
     resave:false,
     saveUninitialized:true,
-    cookie:{
-        expires:Date.now()+7*24*60*60*1000,
-        maxAge:7*24*60*60*1000,
-        httpOnly:true, 
-    }
+    cookie: {
+      expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',  // Enforce secure cookies on HTTPS
+      sameSite: 'strict'  // Additional security measure
+  }  
 }
 
 // app.get("/",(req,res)=>{
@@ -73,6 +75,20 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+passport.use(new LocalStrategy({
+  usernameField: 'username',
+  passwordField: 'password'
+}, async (username, password, done) => {
+  const user = await User.findOne({ username });
+  if (!user) {
+      return done(null, false, { message: 'Incorrect username.' });
+  }
+  const isValid = await user.validatePassword(password);
+  if (!isValid) {
+      return done(null, false, { message: 'Incorrect password.' });
+  }
+  return done(null, user);
+}));
 
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
@@ -119,6 +135,9 @@ app.all("*",(req,res,next)=>{
     next(new expressError(404, "Page Not Found!"));
 })      
 app.use((err, req, res, next) => {
-    let { status = 500, message = "Something went wrong!" } = err;
-    res.status(status).render("error.ejs", { err });
+  let { status = 500, message = "Something went wrong!" } = err;
+  if (process.env.NODE_ENV === 'production') {
+      // Log the error somewhere, e.g., an external monitoring tool
+  }
+  res.status(status).render("error.ejs", { err });
 });
