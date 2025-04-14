@@ -116,7 +116,7 @@ router.get("/owner/bookings", isLoggedIn, async (req, res) => {
     .populate("listing")
     .populate("user");
 
-  res.render("owner/ownerBookings", { bookings });
+  res.render("Owner/ownerBookings", { bookings });
 });
 router.post("/bookings/:id/accept", isLoggedIn, async (req, res) => {
   const booking = await Booking.findById(req.params.id).populate("listing");

@@ -17,7 +17,7 @@ const flash=require("connect-flash");
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
 const User=require("./models/user.js");
-const FacebookStrategy = require('passport-facebook').Strategy;
+
 //routes
 const listingRouter=require("./rotues/listing.js");
 const reviewRouter=require("./rotues/review.js");
