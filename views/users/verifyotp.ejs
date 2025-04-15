@@ -1,0 +1,84 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  .otp-wrapper {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .otp-card {
+    width: 500px;
+    max-width: 90%;
+    border-radius: 15px;
+    padding: 2rem;
+    background-color: #fff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .otp-card h2 {
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .form-control:focus {
+    border-color: #fe424d;
+    box-shadow: none;
+  }
+
+  .btn-gradient {
+    background: linear-gradient(to right, #fe424d, #fe5a70);
+    border: none;
+    color: white;
+    font-weight: 600;
+  }
+
+  .btn-gradient:hover {
+    opacity: 0.9;
+  }
+
+  .text-link {
+    color: #fe424d;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .text-link:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="otp-wrapper">
+  <div class="otp-card">
+    <h2>Verify OTP</h2>
+    <form action="/verify-otp" method="POST" class="needs-validation" novalidate>
+      <input
+        type="hidden"
+        name="emailOrUsername"
+        value="<%= emailOrUsername %>"
+      />
+
+      <div class="mb-3">
+        <label for="otp" class="form-label">Enter OTP:</label>
+        <input
+          type="text"
+          id="otp"
+          name="otp"
+          class="form-control"
+          pattern="\d{6}"
+          required
+        />
+        <div class="invalid-feedback">Enter a valid OTP!</div>
+      </div>
+
+      <button type="submit" class="btn btn-gradient w-100 mb-3">Verify OTP</button>
+    </form>
+
+    <div class="text-center">
+      <a href="/forgotpassword" class="text-link d-block">Resend OTP</a>
+      <a href="/login" class="text-link d-block mt-2">Back to Login</a>
+    </div>
+  </div>
+</div>

@@ -9,7 +9,8 @@ const userSchema=new Schema({
         type:String,
         required:true,
         unique:true
-    },facebook:String   
+    },   resetPasswordOTP: { type: String }, // Store OTP
+    resetPasswordExpires: { type: Date },   
 });
 userSchema.plugin(passportLocalMongoose);
 module.exports=mongoose.model("User",userSchema);

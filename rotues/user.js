@@ -1,21 +1,48 @@
-const express=require("express");
+const express = require("express");
 const passport = require("passport");
-const router = require('express').Router()
-const User=require("../models/user.js");
+const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync");
 const { saveRedirectUrl } = require("../middleware.js");
-const userController=require("../controllers/users.js");
-// signup form 
+const userController = require("../controllers/users.js");
+
+// Signup Routes
 router
-    .route("/signup")
-    .get(userController.renderSignUpForm)
-    .post( wrapAsync(userController.signupForNewUser));
-// login form
+  .route("/signup")
+  .get(userController.renderSignUpForm)
+  .post(wrapAsync(userController.signupForNewUser));
+
+// Login Routes
 router
-    .route("/login")
-    .get( userController.renderLoginForm)
-    .post(saveRedirectUrl,passport.authenticate("local",{failureRedirect:'/login',failureFlash:true}),userController.login);
-// logout
-router.get('/logout' ,userController.logout)
-module.exports  = router;
-// authenticat is an imp method in passport which i use for check the authentication for more check passport website
+  .route("/login")
+  .get(userController.renderLoginForm)
+  .post(
+    saveRedirectUrl,
+    passport.authenticate("local", {
+      failureRedirect: "/login",
+      failureFlash: true,
+    }),
+    userController.login
+  );
+
+// Logout Route
+router.get("/logout", userController.logout);
+
+// Forgot Password Routes
+router
+  .route("/forgotpassword")
+  .get(userController.renderForgotPassword)
+  .post(wrapAsync(userController.forgotPassword));
+
+// OTP Verification Routes
+router
+  .route("/verify-otp")
+  .get(userController.renderVerifyOTP)
+  .post(wrapAsync(userController.verifyOTP));
+
+// Reset Password Route (after OTP is verified)
+router
+  .route("/resetpassword")
+  .get(userController.renderResetPassword)  // This will now use GET method to render reset form
+  .post(wrapAsync(userController.resetPassword));
+
+module.exports = router;
