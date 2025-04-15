@@ -135,9 +135,10 @@ app.all("*",(req,res,next)=>{
     next(new expressError(404, "Page Not Found!"));
 })      
 app.use((err, req, res, next) => {
-  let { status = 500, message = "Something went wrong!" } = err;
-  if (process.env.NODE_ENV === 'production') {
-      // Log the error somewhere, e.g., an external monitoring tool
-  }
-  res.status(status).render("error.ejs", { err });
-});
+    if (res.headersSent) {
+      return next(err); // If headers are already sent, don't try sending another response
+    }
+    let { status = 500, message = "Something went wrong!" } = err;
+    res.status(status).render("error.ejs", { err });
+  });
+  
