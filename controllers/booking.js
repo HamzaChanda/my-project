@@ -4,9 +4,9 @@ const nodemailer = require("nodemailer");
 
 module.exports.createBooking = async (req, res) => {
   const { id } = req.params;
-  const { checkIn, checkOut, guests, email, phone } = req.body.booking;
+  const { guestName, checkIn, checkOut, guests, email, phone } = req.body.booking;
   const guestDetails = req.body.booking.guestDetails || [];
-
+  const guestNames = guestDetails.map((g, i) => `${i + 1}. ${g.name}`).join('\n');
   const listing = await Listing.findById(id).populate("owner");
 
   const newBooking = new Booking({
@@ -48,21 +48,22 @@ module.exports.createBooking = async (req, res) => {
   "${listing.title}".
   
   📅 Booking Details:
-  - Booked by: ${req.user.username}
-  - Guests: ${guests}
+  - Booked by: ${req.user?.username || guestDetails[0]?.name || 'Guest'}
+  - Guests:${guestDetails.length ? `- Guest Names:\n${guestNames}` : ''}
   - Check-in Date: ${checkIn}
   - Check-out Date: ${checkOut}
   
   📞 Contact Info:
-  - Email: ${email || req.user.email}
-  - Phone: ${phone || req.user.phone}
+  - Email: ${email || req.user?.email}
+  - Phone: ${phone || req.user?.phone}
   
   You can view this booking and manage it from your dashboard.
   
   Best regards,  
   Team Wanderlust 🌍
-    `,
+  `
   };
+  
   
 
   try {
