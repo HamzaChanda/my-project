@@ -83,7 +83,7 @@ input::placeholder {
 
 
 <!-- Booking Form -->
-<% if (currentUser && currentUser.id !== listing.owner.id) { %>
+<% if (currentUser && listing.owner && currentUser.id !== listing.owner.id) { %>
   <div class="my-5 mx-auto" style="max-width: 800px;">
     <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
       <div class="card-header bg-success text-white text-center py-3">
