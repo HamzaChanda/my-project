@@ -53,22 +53,25 @@ store.on("error", (err) => {
 });
 
 // session option
-const sessionOptions={
+const sessionOptions = {
     store,
-    secret:process.env.SECRET,
-    resave:false,
-    saveUninitialized:true,
-    cookie:{
-        expires:Date.now()+7*24*60*60*1000,
-        maxAge:7*24*60*60*1000,
-        httpOnly:true, 
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production" // Enable secure cookies in production
     }
-}
-
-// app.get("/",(req,res)=>{
-//     res.send("Welcome, Again!");
-// })
-app.use(session(sessionOptions)); 
+  };
+  
+  if (process.env.NODE_ENV === "production") {
+    app.set("trust proxy", 1); // Trust Render's proxy for secure cookies
+  }
+  
+  app.use(session(sessionOptions)); 
+   
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
