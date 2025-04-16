@@ -61,7 +61,10 @@ input::placeholder {
       </div>
       <div class="card-body p-4">
         <h5 class="card-title">
-          Posted by <span class="fw-semibold fst-italic"><%= listing.owner.username %></span>
+          Posted by <span class="fw-semibold fst-italic">
+            <%= listing.owner ? listing.owner.username : "Unknown" %>
+          </span>
+          
         </h5>
         <p class="card-text my-3"><%= listing.discription %></p>
         <h4 class="text-success fw-bold">&#8377; <%= listing.price.toLocaleString("en-IN") %>/night</h4>
