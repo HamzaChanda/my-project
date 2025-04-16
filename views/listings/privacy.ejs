@@ -1,47 +1,178 @@
 <% layout("layouts/boilerplate") %>
 
-<section class="my-5 py-5 px-4 px-md-5 bg-light rounded shadow-sm" style="max-width: 960px; margin: auto;">
-    <h2 class="text-center text-primary fw-bold mb-4">Privacy Policy</h2>
-  
-    <p class="text-muted">
-      At <strong>Wanderlust</strong>, your privacy and safety come first. We are committed to protecting your personal data and ensuring a secure, seamless experience across our platform.
-    </p>
-  
-    <h5 class="text-dark mt-4">🔍 Information We Collect</h5>
-    <ul class="text-muted">
-      <li>Your name, email, and basic account details during registration</li>
-      <li>Booking and listing data to personalize your experience</li>
-      <li>Device info and cookies for optimization and usability</li>
-    </ul>
-  
-    <h5 class="text-dark mt-4">🔐 Password Protection</h5>
-    <p class="text-muted">
-      We take your security seriously. All passwords are <strong>hashed</strong> using modern cryptographic algorithms and enhanced with <strong>salt</strong> to prevent brute-force and rainbow table attacks. Your actual password is never stored or exposed.
-    </p>
-  
-    <h5 class="text-dark mt-4">🛠️ How We Use Your Data</h5>
-    <ul class="text-muted">
-      <li>To manage your bookings and listings</li>
-      <li>To send updates and personalized recommendations (only with your permission)</li>
-      <li>To detect suspicious activity and enhance security</li>
-    </ul>
-  
-    <h5 class="text-dark mt-4">🛡️ Your Safety, Our Priority</h5>
-    <p class="text-muted">
-      All data interactions are secured using HTTPS. We regularly audit our systems, enforce access controls, and use secure protocols to protect your information from unauthorized access.
-    </p>
-  
-    <h5 class="text-dark mt-4">📌 Your Rights</h5>
-    <ul class="text-muted">
-      <li>Access, update, or delete your information anytime</li>
-      <li>Disable cookies or trackers in your browser settings</li>
-      <li>We never share or sell your data without consent</li>
-    </ul>
-  
-    <p class="text-muted mt-4">
-      If you have any concerns or requests regarding your data, feel free to contact us at 
-      <a href="mailto:hchanda2003@gmail.com">hchanda2003@gmail.com</a>.
-    </p>
-  </section>
-  
-  
+<!-- AOS Animation Library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #eef2f3, #8ec5fc);
+  }
+
+  .privacy-section {
+    padding: 70px 0;
+  }
+
+  /* Updated Heading Style with Airbnb Colors */
+  .privacy-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #FF5A5F; /* Airbnb Red */
+    background: -webkit-linear-gradient(#FF5A5F, #FFB8B8); /* Light Red to Coral Gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .lead-text {
+    font-size: 1.2rem;
+    color: #444;
+  }
+
+  .glass-box {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+    transition: transform 0.3s ease;
+  }
+
+  .glass-box:hover {
+    transform: translateY(-5px);
+  }
+
+  .privacy-list {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .privacy-list li {
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .privacy-list li::before {
+    content: "🔒";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .testimony {
+    background: #fff;
+    padding: 25px;
+    border-left: 5px solid #FF5A5F; /* Airbnb Red */
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .testimony p {
+    font-style: italic;
+    font-size: 1.05rem;
+  }
+
+  .testimony span {
+    font-weight: bold;
+    color: #FF5A5F; /* Airbnb Red */
+  }
+
+  /* Mobile Adjustments */
+  @media (max-width: 768px) {
+    .privacy-title {
+      font-size: 2rem;
+    }
+
+    .lead-text {
+      font-size: 1rem;
+    }
+
+    .privacy-list li {
+      font-size: 0.9rem;
+    }
+
+    .glass-box {
+      padding: 20px;
+    }
+  }
+
+</style>
+
+<main class="privacy-section">
+  <div class="container">
+
+    <div class="text-center mb-5" data-aos="fade-down">
+      <h1 class="privacy-title mb-3">Privacy Policy</h1>
+      <p class="lead-text">At <strong>Wanderlust</strong>, your privacy and safety come first. We are committed to protecting your personal data and ensuring a secure, seamless experience across our platform.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6" data-aos="fade-right">
+        <div class="glass-box">
+          <h4>🔍 Information We Collect</h4>
+          <ul class="privacy-list">
+            <li>Your name, email, and basic account details during registration</li>
+            <li>Booking and listing data to personalize your experience</li>
+            <li>Device info and cookies for optimization and usability</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6" data-aos="fade-left">
+        <div class="glass-box">
+          <h4>🔐 Password Protection</h4>
+          <p>We take your security seriously. All passwords are <strong>hashed</strong> using modern cryptographic algorithms and enhanced with <strong>salt</strong> to prevent brute-force and rainbow table attacks. Your actual password is never stored or exposed.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mt-5">
+      <div class="col-md-6" data-aos="zoom-in-up">
+        <div class="glass-box">
+          <h4>🛠️ How We Use Your Data</h4>
+          <ul class="privacy-list">
+            <li>To manage your bookings and listings</li>
+            <li>To send updates and personalized recommendations (only with your permission)</li>
+            <li>To detect suspicious activity and enhance security</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6" data-aos="zoom-in-down">
+        <div class="glass-box">
+          <h4>🛡️ Your Safety, Our Priority</h4>
+          <p>All data interactions are secured using HTTPS. We regularly audit our systems, enforce access controls, and use secure protocols to protect your information from unauthorized access.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mt-5">
+      <div class="col-md-12" data-aos="fade-up">
+        <div class="glass-box">
+          <h4>📌 Your Rights</h4>
+          <ul class="privacy-list">
+            <li>Access, update, or delete your information anytime</li>
+            <li>Disable cookies or trackers in your browser settings</li>
+            <li>We never share or sell your data without consent</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-5" data-aos="fade-up">
+      <div class="testimony">
+        <p>"Your privacy is important to us. We strive to keep your data safe and ensure that you have control over it at all times."</p>
+        <span>– Wanderlust Team</span>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1200,
+    once: true,
+  });
+</script>

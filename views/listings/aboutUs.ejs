@@ -1,65 +1,201 @@
 <% layout("layouts/boilerplate") %>
+
+<!-- AOS Animation Library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
 <style>
-  .about-content {
-  padding: 50px 0;
- background-color: #f8f9fa;
-}
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #eef2f3, #8ec5fc);
+  }
 
-.about-text {
-  max-width: 800px;
-  margin: auto;
-  text-align: center;
-}
+  .about-section {
+    padding: 70px 0;
+  }
 
-.about-text h2 {
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #007bff;
-}
+  .hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #FF5A5F;
+    background: -webkit-linear-gradient(#FF5A5F, #FFB8B8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 
-.about-text p {
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-  color: #333;
-}.about-container {
-  max-width: 960px;
-  margin: 0 auto;
-}
-.para1{
-  font-size: 1rem;
-}
+  .lead-text {
+    font-size: 1.2rem;
+    color: #444;
+  }
 
+  .glass-box {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+    transition: transform 0.3s ease;
+  }
+
+  .glass-box:hover {
+    transform: translateY(-5px);
+  }
+
+  .tech-icon {
+    font-size: 1.3rem;
+    color: #6a11cb;
+    margin-right: 10px;
+  }
+
+  .typewriter {
+    display: inline-block;
+    border-right: 2px solid #000;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: typing 3s steps(30, end), blink 0.6s step-end infinite;
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: #343a40;
+  }
+
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+
+  @keyframes blink {
+    50% { border-color: transparent }
+  }
+
+  .testimony {
+    background: #fff;
+    padding: 25px;
+    border-left: 5px solid #8e2de2;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .testimony p {
+    font-style: italic;
+    font-size: 1.05rem;
+  }
+
+  .testimony span {
+    font-weight: bold;
+    color: #FF5A5F;
+  }
+  @media (max-width: 768px) {
+    .about-text h2 {
+      font-size: 1.8rem;
+    }
+
+    .para1, .about-text p {
+      font-size: 0.95rem;
+    }
+
+    .typewriter h1 {
+      font-size: 1.5rem;
+    }
+
+    .about-container {
+      padding: 20px 15px;
+    }
+
+    .list-unstyled li {
+      font-size: 0.95rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .about-text h2 {
+      font-size: 1.5rem;
+    }
+
+    .about-container {
+      padding: 15px 10px;
+    }
+
+    .list-unstyled li {
+      font-size: 0.9rem;
+    }
+
+    .display-4 {
+      font-size: 2rem;
+    }
+
+    .lead {
+      font-size: 1rem;
+    }
+  }
 </style>
 
-<main class="about-content">
-  <section class="py-5 bg-light">
-    <div class="about-container mx-auto px-4 py-5 bg-light rounded shadow">
+<main class="about-section">
+  <div class="container">
 
-      <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-primary">About Wanderlust</h1>
-        <p class="lead">Built by <strong>Hamza Chanda</strong> to simplify how people explore and experience unique stays.</p>
+    <div class="text-center mb-5" data-aos="fade-down">
+      <h1 class="hero-title mb-3">About Wanderlust</h1>
+      <div class="typewriter">Built with ❤️ by Hamza Chanda</div>
+      <p class="lead-text mt-3">Experience comfort, adventure, and creativity packed into one platform.</p>
+    </div>
+
+    <div class="row g-5">
+      <div class="col-md-6" data-aos="fade-right">
+        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267" class="img-fluid rounded shadow" alt="About Image">
       </div>
-  
-      <div class="row g-4">
-        <div class="col-md-6">
-          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267" class="img-fluid rounded shadow" alt="About Wanderlust">
-        </div>
-        <div class="col-md-6">
+      <div class="col-md-6" data-aos="fade-left">
+        <div class="glass-box">
           <h3 class="fw-semibold mb-3">What is Wanderlust?</h3>
-          <p class="para1">Wanderlust is a full-stack web application inspired by Airbnb. It helps users explore beautiful places, discover new experiences, and find cozy, luxurious, or offbeat stays across the globe.</p>
-  
-          <h3 class="fw-semibold mt-4 mb-3">Technologies Used</h3>
+          <p>Wanderlust is a full-stack Airbnb-inspired web app that helps travelers explore unique places across the world — mountains, castles, villas, and more.</p>
+
+          <h4 class="mt-4 mb-2">🚀 Technologies Used</h4>
           <ul class="list-unstyled">
-            <li>✅ MongoDB for flexible data storage</li>
-            <li>✅ Express.js for backend routing</li>
-            <li>✅ Node.js for server-side logic</li>
-            <li>✅ EJS for dynamic templates</li>
+            <li><i class="bi bi-database tech-icon"></i>MongoDB (Database)</li>
+            <li><i class="bi bi-node-plus tech-icon"></i>Express.js & Node.js (Backend)</li>
+            <li><i class="bi bi-easel2 tech-icon"></i>EJS (Templating Engine)</li>
+            <li><i class="bi bi-cloud-upload tech-icon"></i>Cloudinary (Image Uploads)</li>
+            <li><i class="bi bi-geo-alt-fill tech-icon"></i>Mapbox (Location Search)</li>
           </ul>
-  
-          <h3 class="fw-semibold mt-4 mb-3">Why I Built This</h3>
-          <p class="para1">I created Wanderlust to learn full-stack development and build something real that could help others while showcasing my technical skills. It's a project close to my heart.</p>
         </div>
       </div>
     </div>
-  </section>
+
+    <div class="row mt-5 g-4">
+      <div class="col-md-6" data-aos="zoom-in-up">
+        <div class="glass-box">
+          <h4 class="mb-3">🎯 Features</h4>
+          <ul class="list-unstyled">
+            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Login & Register</li>
+            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Full CRUD Listings</li>
+            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Booking system with check-in/out</li>
+            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Owner Dashboard</li>
+            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Reviews & Ratings</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-6" data-aos="zoom-in-down">
+        <div class="glass-box">
+          <h4 class="mb-3">🌟 Why I Built It</h4>
+          <p>I wanted to build a real-world full stack project that solves a genuine need. Wanderlust gave me the opportunity to grow as a developer and challenge myself to combine design, backend, and real-time user experiences.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-5" data-aos="fade-up">
+      <div class="testimony">
+        <p>"This project is a reflection of my journey into full-stack development. From handling backend logic to designing beautiful interfaces, Wanderlust helped me connect code with creativity."</p>
+        <span>– Hamza Chanda, Developer of Wanderlust</span>
+      </div>
+    </div>
+
+  </div>
 </main>
+
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1200,
+    once: true,
+  });
+</script>

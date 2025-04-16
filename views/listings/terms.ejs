@@ -1,63 +1,120 @@
 <% layout("layouts/boilerplate") %>
 
 <style>
-   .terms-hero {
-    background-color: #e9f2ff; /* New subtle blue background */
-    color: #003366;
+  /* Hero Section Styling */
+  .terms-hero {
+    background: linear-gradient(135deg, #FF5A5F, #FFB6B9); /* Airbnb's signature red gradient */
+    color: white;
     padding: 80px 20px;
     text-align: center;
+    border-bottom: 5px solid #FF5A5F; /* Accent border matching Airbnb's red */
+    transition: background 0.4s ease-in-out; /* Smooth transition on background change */
   }
 
   .terms-hero h1 {
     font-size: 3.5rem;
     font-weight: 800;
     margin-bottom: 15px;
+    letter-spacing: 1.5px;
+    transition: transform 0.3s ease-in-out; /* Smooth scale effect */
   }
 
   .terms-hero p {
     font-size: 1.2rem;
     opacity: 0.9;
+    font-style: italic;
+    transition: opacity 0.4s ease-in-out;
   }
 
+  .terms-hero:hover h1 {
+    transform: scale(1.05); /* Slightly scale up on hover */
+  }
+
+  /* Main Section Styling */
   .terms-main {
     padding: 60px 20px;
-    background-color: #f9fbfd;
+    background-color: #F7F7F7; /* Airbnb's light gray background for main content */
+    transition: background-color 0.3s ease-in-out; /* Smooth background color transition */
   }
 
+  /* Card Styling */
   .terms-card {
     max-width: 1000px;
     margin: auto;
     background: white;
-    border-left: 6px solid #007bff;
+    border-left: 6px solid #FF5A5F; /* Red left border to match Airbnb theme */
     padding: 40px;
     border-radius: 18px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth hover effect */
   }
 
+  .terms-card:hover {
+    transform: translateY(-10px); /* Subtle lift effect */
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15); /* Increased shadow on hover */
+  }
+
+  /* Terms Section Styling */
   .terms-section {
     margin-bottom: 40px;
+    transition: all 0.3s ease-in-out; /* Smooth transition on section hover */
   }
 
   .terms-section h3 {
     display: flex;
     align-items: center;
     font-size: 1.5rem;
-    color: #007bff;
+    color: #FF5A5F; /* Airbnb's red color for section titles */
     font-weight: 600;
     margin-bottom: 10px;
+    transition: color 0.3s ease-in-out;
   }
 
   .terms-section h3 i {
     margin-right: 10px;
     font-size: 1.3rem;
+    transition: transform 0.3s ease-in-out; /* Smooth icon transition */
   }
 
   .terms-section p {
     font-size: 1.05rem;
-    color: #444;
+    color: #333; /* Dark gray text color for better readability */
     line-height: 1.7;
   }
 
+  .terms-section:hover h3 {
+    color: #FF3B30; /* Darker red on hover for section titles */
+  }
+
+  .terms-section:hover h3 i {
+    transform: rotate(10deg); /* Slight rotation effect on icon */
+  }
+
+  /* Footer Section Styling */
+  .terms-footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #FF5A5F; /* Airbnb's red footer background */
+    color: white;
+    font-size: 1rem;
+    border-radius: 10px;
+    margin-top: 40px;
+    transition: background-color 0.3s ease-in-out; /* Smooth transition on hover */
+  }
+
+  .terms-footer a {
+    color: white; /* White link color for visibility */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease-in-out; /* Smooth transition for link hover */
+  }
+
+  .terms-footer a:hover {
+    text-decoration: underline;
+    color: #FFB6B9; /* Lighter pink for link hover effect */
+  }
+
+  /* Mobile Responsiveness */
   @media (max-width: 768px) {
     .terms-hero h1 {
       font-size: 2.3rem;
@@ -119,3 +176,7 @@
 
   </div>
 </main>
+
+<div class="terms-footer">
+  <p>&copy; 2025 Wanderlust. All rights reserved. <br><a href="mailto:hchanda2003@gmail.com">Contact Us</a> for more info.</p>
+</div>
