@@ -40,36 +40,77 @@
 //             .setHTML(`<h4>${listing.location}</h4><p>Exact Location will be provided after booking</p>`)
 //     )
 //     .addTo(map);
+// mapboxgl.accessToken = mapToken;
+
+// // Parse the coordinates
+// let parsedCoordinates;
+// try {
+//     parsedCoordinates = JSON.parse(coordinates);
+//     console.log("Parsed Coordinates:", parsedCoordinates); // Debugging line
+// } catch (e) {
+//     console.error("Invalid coordinates format:", coordinates);
+//     parsedCoordinates = [77.2090, 28.6139]; // Default coordinates
+// }
+
+// // Initialize the map
+// const map = new mapboxgl.Map({
+//     container: 'map', // container ID
+//     style: 'mapbox://styles/mapbox/dark-v11', // style URL
+//     center: parsedCoordinates, // starting position [lng, lat]
+//     zoom: 9 // starting zoom
+// });
+// // Add marker with popup after the map loads
+// map.on('load', function() {
+//     if (parsedCoordinates && parsedCoordinates.length === 2) {
+//         const marker = new mapboxgl.Marker({color:"red"})
+//             .setLngLat(parsedCoordinates)
+//             .setPopup(
+//                 new mapboxgl.Popup({  })
+//                 .setHTML(`<p>Exact Location will be provided after booking</p>`))
+//             .addTo(map);
+//         console.log("Marker added at:", parsedCoordinates); // Debugging line
+//     } else {
+//         console.error("Invalid coordinates for marker:", parsedCoordinates);
+//     }
+// });
 mapboxgl.accessToken = mapToken;
 
-// Parse the coordinates
+if (!coordinates) {
+    console.warn("No coordinates found, using default location.");
+    coordinates = JSON.stringify([77.2090, 28.6139]);
+}
+
 let parsedCoordinates;
 try {
     parsedCoordinates = JSON.parse(coordinates);
-    console.log("Parsed Coordinates:", parsedCoordinates); // Debugging line
+    if (!Array.isArray(parsedCoordinates) || parsedCoordinates.length !== 2) {
+        throw new Error("Parsed coordinates not a valid [lng, lat] array.");
+    }
+    console.log("Parsed Coordinates:", parsedCoordinates);
 } catch (e) {
     console.error("Invalid coordinates format:", coordinates);
-    parsedCoordinates = [77.2090, 28.6139]; // Default coordinates
+    parsedCoordinates = [77.2090, 28.6139]; // Default
 }
 
-// Initialize the map
+if (typeof mapboxgl === "undefined") {
+    console.error("Mapbox GL JS is not loaded.");
+}
+
 const map = new mapboxgl.Map({
-    container: 'map', // container ID
-    style: 'mapbox://styles/mapbox/dark-v11', // style URL
-    center: parsedCoordinates, // starting position [lng, lat]
-    zoom: 9 // starting zoom
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v11',
+    center: parsedCoordinates,
+    zoom: 9
 });
-// Add marker with popup after the map loads
-map.on('load', function() {
-    if (parsedCoordinates && parsedCoordinates.length === 2) {
-        const marker = new mapboxgl.Marker({color:"red"})
-            .setLngLat(parsedCoordinates)
-            .setPopup(
-                new mapboxgl.Popup({  })
-                .setHTML(`<p>Exact Location will be provided after booking</p>`))
-            .addTo(map);
-        console.log("Marker added at:", parsedCoordinates); // Debugging line
-    } else {
-        console.error("Invalid coordinates for marker:", parsedCoordinates);
-    }
+
+map.on('load', function () {
+    const marker = new mapboxgl.Marker({ color: "red" })
+        .setLngLat(parsedCoordinates)
+        .setPopup(
+            new mapboxgl.Popup()
+                .setHTML(`<p>Exact Location will be provided after booking</p>`)
+        )
+        .addTo(map);
+
+    console.log("Marker added at:", parsedCoordinates);
 });
