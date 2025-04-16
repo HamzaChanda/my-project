@@ -17,7 +17,7 @@ const flash=require("connect-flash");
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
 const User=require("./models/user.js");
-
+const cors = require('cors');
 //routes
 const listingRouter=require("./rotues/listing.js");
 const reviewRouter=require("./rotues/review.js");
@@ -67,8 +67,17 @@ const sessionOptions = {
   };
   
   if (process.env.NODE_ENV === "production") {
-    app.set("trust proxy", 1); // Trust Render's proxy for secure cookies
-  }
+    app.set("trust proxy", 1);  // Trust the proxy
+    sessionOptions.cookie.secure = true;  // Enable secure cookies for HTTPS
+}
+const corsOptions = {
+    origin: 'https://my-project-2-9ext.onrender.com',  // Replace with your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,  // Allow cookies to be sent with requests
+};
+
+// Enable CORS for all routes
+app.use(cors(corsOptions));
   
   app.use(session(sessionOptions)); 
    
