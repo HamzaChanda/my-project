@@ -84,10 +84,17 @@ module.exports.createListing = async (req, res, next) => {
         }
 
         // GeoCoding location
+        const userLocation = req.body.listing.location;
+        if (!userLocation || userLocation.length < 3) {
+            req.flash("error", "Please enter a more specific location.");
+            return res.redirect("/listings/new");
+        }
+        
         const geoResponse = await geoCodingClient.forwardGeocode({
-            query: req.body.listing.location,
+            query: userLocation,
             limit: 1
         }).send();
+        console.log("GeoCoding response:", geoResponse.body.features[0].geometry);
 
         if (!geoResponse.body.features.length) {
             req.flash("error", "Invalid location provided.");
@@ -111,7 +118,7 @@ module.exports.createListing = async (req, res, next) => {
 
     } catch (err) {
         console.error("❌ Error in createListing:", err);
-        req.flash("error", "Something went wrong while creating the listing.");
+        req.flash("error", "Something went wrong while creating the listing."); // Pass to Express error handler
         return res.redirect("/listings/new");
     }
 };
