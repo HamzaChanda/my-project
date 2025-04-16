@@ -216,10 +216,8 @@ module.exports.resetPassword = async (req, res) => {
         }
 
         // Hash the new password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        await user.setPassword(password);
 
-        // Update the user's password
-        user.password = hashedPassword; // Update the password field
 
         // Clear the OTP fields as the password has been reset
         user.resetPasswordOTP = undefined;
