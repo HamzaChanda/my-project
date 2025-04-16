@@ -28,15 +28,62 @@ module.exports.showListing=async (req, res) => {
         res.render("listings/show.ejs", { listing });
 };
 // create route
+// module.exports.createListing = async (req, res, next) => {
+//     try {
+//         console.log("Received data:", req.body.listing);
+
+//         if (!req.body.listing || !req.file) {
+//             req.flash("error", "Incomplete listing data or image not uploaded.");
+//             return res.redirect("/listings/new");
+//         }
+
+//         const geoResponse = await geoCodingClient.forwardGeocode({
+//             query: req.body.listing.location,
+//             limit: 1
+//         }).send();
+
+//         if (!geoResponse.body.features.length) {
+//             req.flash("error", "Invalid location provided.");
+//             return res.redirect("/listings/new");
+//         }
+
+//         const newListing = new Listings(req.body.listing);
+//         newListing.owner = req.user._id;
+//         newListing.image = {
+//             url: req.file.path,
+//             filename: req.file.filename
+//         };
+//         newListing.geometry = geoResponse.body.features[0].geometry;
+
+//         const savedListing = await newListing.save();
+//         console.log("Saved listing:", savedListing);
+
+//         req.flash("success", "New listing created!");
+//         return res.redirect("/listings");
+
+//     } catch (err) {
+//         console.error("Error in createListing:", err);
+//         next(err); // Pass to Express error handler
+//     }
+// };
 module.exports.createListing = async (req, res, next) => {
     try {
-        console.log("Received data:", req.body.listing);
+        console.log("✅ Received form data:", req.body.listing);
+        console.log("✅ Authenticated user:", req.user);
 
+        // Check if user is logged in
+        if (!req.user) {
+            req.flash("error", "You must be logged in to create a listing.");
+            return res.redirect("/login");
+        }
+
+        // Check for required fields
         if (!req.body.listing || !req.file) {
             req.flash("error", "Incomplete listing data or image not uploaded.");
             return res.redirect("/listings/new");
         }
 
+        // GeoCoding location
         const geoResponse = await geoCodingClient.forwardGeocode({
             query: req.body.listing.location,
             limit: 1
@@ -47,6 +94,7 @@ module.exports.createListing = async (req, res, next) => {
             return res.redirect("/listings/new");
         }
 
+        // Create new listing
         const newListing = new Listings(req.body.listing);
         newListing.owner = req.user._id;
         newListing.image = {
@@ -56,14 +104,15 @@ module.exports.createListing = async (req, res, next) => {
         newListing.geometry = geoResponse.body.features[0].geometry;
 
         const savedListing = await newListing.save();
-        console.log("Saved listing:", savedListing);
+        console.log("✅ Saved listing:", savedListing);
 
         req.flash("success", "New listing created!");
         return res.redirect("/listings");
 
     } catch (err) {
-        console.error("Error in createListing:", err);
-        next(err); // Pass to Express error handler
+        console.error("❌ Error in createListing:", err);
+        req.flash("error", "Something went wrong while creating the listing.");
+        return res.redirect("/listings/new");
     }
 };
 
